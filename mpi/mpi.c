@@ -39,7 +39,7 @@ int api_distributed_max(int *data, int n) {
             MPI_INT, MPI_MAX, 
             0, MPI_COMM_WORLD); 
  
- return result; | 
+ return result;
 void api_finalize() { 
  MPI_Finalize(); 
 } 
