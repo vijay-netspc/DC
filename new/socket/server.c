@@ -4,37 +4,51 @@
 #include <arpa/inet.h>
 
 int main() {
-    int sock;
-    struct sockaddr_in serv_addr;
+    int server_socket, client_socket;
+    struct sockaddr_in address;
+    int addrlen = sizeof(address);
     int N;
 
     char buffer[1024] = {0};
 
     // Create socket
-    sock = socket(AF_INET, SOCK_STREAM, 0);
+    server_socket = socket(AF_INET, SOCK_STREAM, 0);
 
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(8080);
+    // Define address
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(8080);
 
-    // Change IP if using different system
-    inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
+    // Bind and listen
+    bind(server_socket, (struct sockaddr *)&address, sizeof(address));
+    listen(server_socket, 3);
 
-    // Connect
-    connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
+    printf("Server waiting...\n");
 
-    // Input
-    printf("Enter N: ");
-    scanf("%d", &N);
+    // Accept client
+    client_socket = accept(server_socket, (struct sockaddr *)&address, (socklen_t*)&addrlen);
 
-    // Send N
-    write(sock, &N, sizeof(N));
+    // Receive N
+    read(client_socket, &N, sizeof(N));
+    printf("Received N = %d\n", N);
 
-    // Receive result
-    read(sock, buffer, sizeof(buffer));
+    // Prepare odd numbers as string
+    char result[1024] = "Odd numbers: ";
+    char temp[20];
 
-    printf("From Server:\n%s\n", buffer);
+    for(int i = 0; i <= N; i++) {
+        if(i % 2 != 0) {
+            sprintf(temp, "%d ", i);
+            strcat(result, temp);
+        }
+    }
 
-    close(sock);
+    // Send result to client
+    send(client_socket, result, sizeof(result), 0);
+
+    // Close
+    close(client_socket);
+    close(server_socket);
 
     return 0;
 }
