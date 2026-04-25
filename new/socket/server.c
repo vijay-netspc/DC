@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-
+#include<string.h>
 int main() {
     int server_socket, client_socket;
     struct sockaddr_in address;
