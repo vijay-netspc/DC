@@ -1,0 +1,13 @@
+# Install prerequisites (Ubuntu)
+sudo apt update
+sudo apt install -y build-essential openmpi-bin openmpi-common libopenmpi-dev
+
+# Verify installation
+mpicc --version
+mpirun --version
+
+# Compile the program
+mpicc mpi.c -o mpi
+
+# Run the program with 8 processes
+mpirun -np 4 ./mpi
