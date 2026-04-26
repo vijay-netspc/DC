@@ -1,20 +1,19 @@
-#include<mpi.h>
 #include<stdio.h>
+#include<mpi.h>
 #include<stdlib.h>
 
 int main(int argc,char *argv[]){
-int rank,size;
-int local,sum,max;
+int size,rank;
+int local,sum;
 MPI_Init(&argc,&argv);
-MPI_Comm_size(MPI_COMM_WORLD,&size);
 MPI_Comm_rank(MPI_COMM_WORLD,&rank);
-
-int data[]={40,30,50,10};
-
+MPI_Comm_size(MPI_COMM_WORLD,&size);
+int data[]={10,20,30,40};
 MPI_Scatter(data,1,MPI_INT,&local,1,MPI_INT,0,MPI_COMM_WORLD);
 MPI_Reduce(&local,&sum,1,MPI_INT,MPI_SUM,0,MPI_COMM_WORLD);
-MPI_Reduce(&local,&max,1,MPI_INT,MPI_MAX,0,MPI_COMM_WORLD);
+
 if(rank==0)
-        printf("sum: %d max %d\n",sum,max);
+        printf("Sum:%d",sum);
 MPI_Finalize();
+
 }
