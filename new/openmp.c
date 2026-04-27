@@ -48,6 +48,7 @@ printf("\n");
 printf("\nTotal multiplication operations = %d\n", global_count); 
 return 0; 
 }  
- 
+/* 
 ###################
-#gcc openmp.c -o openmp -fopenmp
+gcc openmp.c -o openmp -fopenmp
+*/
