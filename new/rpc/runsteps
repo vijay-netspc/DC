@@ -1,0 +1,9 @@
+In Terminal: 
+sudo apt update 
+sudo apt install libtirpc-dev rpcbind 
+gcc matrix_server.c matrix_svc.c matrix_xdr.c \ -I/usr/include/tirpc -ltirpc -o server 
+gcc matrix_client.c matrix_clnt.c matrix_xdr.c \ -I/usr/include/tirpc -ltirpc -o client 
+sudo service rpcbind start 
+To check: rpcinfo -p 
+Terminal 1: ./server 
+Terminal 2: ./client localhost
